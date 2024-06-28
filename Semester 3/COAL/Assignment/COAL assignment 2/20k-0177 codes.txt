@@ -1,0 +1,543 @@
+===========================================================		QUESTION 1		===========================================================
+TITLE Array Sum Q1
+include irvine32.inc
+include macros.inc
+.data
+array sdword  -30,45,11,90,-87,66,18
+j dword  ?
+k dword ?
+sum1 dword ?
+sum2 dword ?
+.code
+main proc
+
+xor eax,eax
+xor ebx,ebx
+xor ecx,ecx
+xor edx,edx
+mwrite "Elements of array are: "
+call crlf
+mov ecx,lengthof array
+mov esi,0
+L3:
+	mov eax,array[esi]
+	call writeint
+	mwrite " "
+	add esi,4
+loop l3
+call crlf
+mwrite "Enter the starting indexed element"
+call readint
+mov j,eax
+mwrite "Enter the ending indexed element"
+call readint
+mov k,eax
+push offset array
+push lengthof array
+push j
+push k
+call array_sum
+mov sum1,eax
+add esp,8
+xor eax,eax
+mwrite "Enter the starting indexed element"
+call readint
+mov j,eax
+mwrite "Enter the ending indexed element"
+call readint
+mov k,eax
+push j
+push k
+call array_sum
+mov sum2,eax
+call crlf
+mov eax,sum1
+mwrite "The sum first time is:"
+call crlf
+call writeint
+call crlf
+mwrite"The sum second time is: "
+call crlf
+mov eax,sum2
+call writeint
+
+exit
+main endp
+
+array_sum proc uses ecx edx ebx esi
+
+push ebp
+mov ebp,esp
+mov ecx,[ebp+32]
+mov esi,[ebp+36]
+mov ebx,0
+mov eax,0
+l1:	mov edx,[esi+ebx]
+cmp edx,[ebp+28]
+je e_found
+cmp ecx,0
+je en_found
+dec ecx
+add ebx,4
+jmp l1
+e_found:
+	l2:
+		mov edx,[esi+ebx]
+		cmp edx,[ebp+24]
+		je en_found
+		add eax,[esi+ebx]
+		add ebx,4
+		jmp l2
+en_found:
+cmp eax,0
+jne ret_elem
+mwrite "Element not found"
+ret_elem:
+	add eax,[esi+ebx]
+	mov esp,ebp
+	pop ebp
+	ret
+array_sum endp
+end main
+==============================						QUESTION 2				============================================
+TITLE Insertion sort Q2
+include irvine32.inc
+include macros.inc
+.data
+array dword  60,4,17,45,7
+temp dword ?
+max dword ?
+.code
+main proc
+
+xor eax,eax
+xor ebx,ebx
+xor ecx,ecx
+xor edx,edx
+mov ecx,lengthof array
+outerloop:
+	;mov edi,offset array
+	mov edx,offset array
+	mov eax,[edx]
+	mov max,eax
+	mov temp,ecx
+	mov esi,offset array
+	innerloop:
+		mov ebx,[esi]
+		cmp ebx,max
+		jle next
+		mov max,ebx
+		mov edx,esi		;edx hold address of max value
+		next:
+		add esi,4
+	loop innerloop
+	; maximum number is obtained
+	mov ecx,temp
+	cmp edx,esi
+	je n_swap
+	sub esi,4
+	push esi
+	push edx
+	call swap
+	pop eax
+	pop eax
+	xor eax,eax
+	n_swap:
+loop outerloop
+mov esi,offset array
+mov ebx,0
+mov ecx,lengthof array
+l1:
+	mov eax,[esi+ebx]
+	call writedec
+	mwrite " "
+	add ebx,4
+loop l1
+
+exit
+main endp
+
+swap proc
+push ebp
+mov ebp,esp
+mov esi,[ebp+8]		;source
+mov edi,[esp+12]		;dest
+mov ebx,[esi]
+xchg ebx,[edi]
+mov [esi],ebx
+mov esp,ebp
+pop ebp
+ret
+
+swap endp
+end main
+
+==============================						QUESTION 3				============================================
+include irvine32.inc
+
+.data
+array byte 11,9,45,3,2,7,8,31,99
+temp dword ?
+
+.code
+main proc
+xor eax,eax
+xor ebx,ebx
+xor ecx,ecx
+xor edx,edx
+push offset array
+mov ebx,lengthof array
+push ebx
+call bubblesort
+mov ecx,lengthof array
+mov esi,offset array
+mov eax,0
+l1:
+	mov al,[esi]
+	call writedec
+	call crlf
+	inc esi
+loop l1
+exit
+main endp
+bubblesort proc 
+push ebp
+mov ebp,esp
+
+mov ecx, [ebp+8]
+dec ecx
+outerloop:
+	mov esi,[ebp+12]
+	mov temp,ecx
+	mov ecx,[ebp+8]
+	dec ecx
+	innerloop:
+		mov dl,[esi]
+		mov al,[esi+1]
+		cmp dl,al
+		jb n_swap
+		xchg dl,al
+		mov [esi],dl
+		mov [esi+1],al
+		n_swap:
+		inc esi
+		loop innerloop
+	mov ecx,temp
+loop outerloop
+mov esp,ebp
+pop ebp
+ret 8
+bubblesort endp
+end main
+==============================						QUESTION 4				============================================
+include irvine32.inc
+include macros.inc
+.data
+n dword ?
+
+.code
+main proc
+xor ebx,ebx
+mwrite "Enter the number to find factorial "
+call readint
+cmp eax,1
+je cc
+cmp eax,0
+je cc
+mov n,eax
+mov ebx,eax
+dec ebx
+mov ecx,n
+call factorial
+call writedec
+exit
+cc:
+	mwrite "The factorial is 1"
+exit
+main endp
+
+factorial proc
+	cmp ebx,0
+	je end_prog
+	imul eax,ebx
+	dec ebx
+	call factorial
+end_prog:
+ret
+factorial endp
+end main
+==============================						QUESTION 5				============================================
+include irvine32.inc
+include macros.inc
+.data
+input byte ?
+count byte 0
+.code
+main proc
+xor eax,eax
+mwrite "Enter a character "
+mov edx,offset input
+mov ecx,2
+call readstring
+
+mov al,input[0]
+mov ecx,8
+clc
+l1:
+	shr al,1
+	jnc cont
+	inc count
+	cont:
+loop l1
+mov al,input[0]
+call writebin
+call crlf
+mwrite "The number of 1's are: "
+mov al,count
+call writedec
+
+exit
+main endp
+end main
+==============================						QUESTION 6				============================================
+include irvine32.inc
+include macros.inc
+.data
+array1 dword 3,1,5,7,8,11,9
+array2 dword 1,5,6,10,13,11,9
+temp dword ?
+count dword ?
+countmatches proto ,ptr1:ptr dword,ptr2:ptr dword,len:dword
+.code
+main proc
+xor eax,eax
+invoke countmatches,addr array1,addr array2, lengthof array1
+mwrite "Number of same elements are: "
+call crlf
+call writedec
+
+exit
+main endp
+
+countmatches proc uses esi edi ecx ebx edx ,ptr1:ptr dword,
+				ptr2:ptr dword,
+					len:dword 
+
+mov esi,ptr1
+mov edi,ptr2
+mov ecx,len
+;mov ebx,0
+outerloop:
+	mov ebx,0
+	mov temp,ecx
+	mov ecx,len
+	innerloop:
+		mov edx,[esi]
+		cmp edx,[edi+ebx]
+		jne cont
+		inc eax
+		cont:
+		add ebx,4
+	loop innerloop
+	mov ecx,temp
+	add esi,4
+loop outerloop
+	
+ret 12
+countmatches endp
+end main
+==============================						QUESTION 7				============================================
+include irvine32.inc
+include macros.inc
+.data
+op1 qword 0A2B2A40674981234h,0BC346AF1A3315891h	;16 bytes number
+op2 qword 08010870000234502h,213D45FA11A36531h	;16 bytes number
+sum dword 5 dup(?)
+
+.code
+main proc
+mov esi, offset op1
+mov edi, offset op2
+mov ebx, offset sum
+mov ecx,4
+call extended_add
+mov ebx,offset sum
+mov ecx,lengthof sum
+mov edx,sizeof sum
+sub edx,4
+l1:
+mov eax, [ebx+edx]
+call writehex
+mwrite " "
+sub edx,4
+loop l1
+exit
+main endp
+
+extended_add proc
+pushad
+clc
+l1:
+	mov eax,[esi]
+	adc eax,[edi]
+	mov [ebx],eax
+	pushfd
+	add esi,4
+	add edi,4
+	add ebx,4
+	popfd
+loop l1
+popad
+adc word ptr [ebx],0
+ret
+
+extended_add endp
+end main
+==============================						QUESTION 8				============================================
+include irvine32.inc
+include macros.inc
+.data
+op1 qword 0F1A2A40674781134h,0BA346AD1A3335851h	;16 bytes number
+op2 qword 03010830000234502h,213D45FA11A36531h	;16 bytes number
+diff dword 5 dup(?)
+
+.code
+main proc
+mov esi, offset op1
+mov edi, offset op2
+mov ebx, offset diff
+mov ecx,4
+call extended_sub
+mov ebx,offset diff
+mov ecx,lengthof diff
+mov edx,sizeof diff
+sub edx,4
+l1:
+mov eax, [ebx+edx]
+call writehex
+mwrite " "
+sub edx,4
+loop l1
+exit
+main endp
+
+extended_sub proc
+pushad
+clc
+l1:
+	mov eax,[esi]
+	sbb eax,[edi]
+	mov [ebx],eax
+	pushfd
+	add esi,4
+	add edi,4
+	add ebx,4
+	popfd
+loop l1
+popad
+sbb word ptr [ebx],0
+ret
+
+extended_sub endp
+end main
+==============================						QUESTION 9				============================================
+include irvine32.inc
+include macros.inc
+.data
+a dword ?
+b dword ?
+find_gcd proto, val1:dword,val2:dword
+.code
+main proc
+xor eax,eax
+mov ecx,3
+l1:
+	mwrite "Enter two numbers to find GCD: "
+	call readint
+	mov a,eax
+	call readint
+	mov b,eax
+	invoke find_gcd,a,b
+	call crlf
+	mwrite "The GCD is: "
+	call crlf
+	call writedec
+	call crlf
+loop l1
+exit
+main endp
+
+find_gcd proc, val1:dword,val2:dword
+
+cmp val1,0
+je rval2
+cmp val2,0
+je rval1
+mov ebx,val1
+mov edx,val2
+cmp ebx,edx
+je rval1
+cmp ebx,edx
+jb cont
+sub ebx,edx
+mov val1,ebx
+invoke find_gcd,val1,val2
+ret
+cont:
+sub edx,ebx
+mov val2,edx
+invoke find_gcd,val1,val2
+ret 
+rval1:
+	mov eax,ebx
+	ret 
+rval2:
+	mov eax,edx
+	ret 
+
+find_gcd endp
+end main
+==============================						QUESTION 10				============================================
+include irvine32.inc
+include macros.inc
+.data
+array1 dword 9,15,11,6,33,19,2
+array2 dword 1,5,6,10,13,11,9
+temp dword ?
+differ dword ?
+countnearmatches proto ,ptr1:ptr dword,ptr2:ptr dword,len:dword,diff:dword
+.code
+main proc
+xor eax,eax
+mov differ,3
+invoke countnearmatches,addr array1,addr array2, lengthof array1, differ
+mwrite "Number of elements whose difference is greater than 3 are: "
+call crlf
+call writedec
+
+exit
+main endp
+
+countnearmatches proc uses esi edi ecx ,ptr1:ptr dword,
+				ptr2:ptr dword,
+					len:dword,
+					diff:dword
+
+mov esi,ptr1
+mov edi,ptr2
+mov ecx,len
+;mov ebx,0
+outerloop:
+	mov edx,[esi]
+	sub edx,[edi]		;array1[i] - array2[i]
+	cmp edx,diff
+	jg cont
+	inc eax
+	cont:
+	add esi,4
+	add edi,4
+loop outerloop
+	
+ret
+countnearmatches endp
+end main
