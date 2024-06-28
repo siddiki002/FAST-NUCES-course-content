@@ -1,0 +1,72 @@
+================================ QUESTION 01	========================
+a)
+sudo addgroup oslab02
+
+b)
+sudo adduser osuser1 --ingroup oslab02
+sudo adduser osuser2 --ingroup oslab02
+
+c)
+sudo usermod -aG osuser1
+sudo usermod -aG osuser2
+
+d)
+su osuser1
+
+================================ QUESTION 02	========================
+mkdir -p dirOslab/subdir/subsubdir/Oslab2
+
+================================ QUESTION 03	========================
+cat file1.txt 
+cat file2.txt
+cat file1.txt file2.txt > file3.txt
+================================ QUESTION 04	========================
+a)
+sudo adduser abc
+b) 
+touch file3.txt
+c)
+sudo chown abc file3.txt
+d)
+mv file3.txt ammar.txt
+e)
+touch -t 02112022 hello.txt
+f)
+sudo cp -r proc tempdir	(make sure to be in '\' path)
+(The whole available memory got used)
+g)
+rm -r dirOslab
+h)
+touch dummyfile.txt
+chown abc dummyfile.txt
+i)
+ps -A
+kill 1911 
+(The process got terminated and nothing happened within the system)
+j)
+ls file*
+k)
+df
+================================ QUESTION 05	========================
+a)
+ls *sh
+b)
+cd Home/Desktop/k200177
+c)
+ls *[A-Z]
+d)
+mkdir -p Letters/Programs/Misc
+e)
+mv | grep let tempdir Letters
+f)
+cp *[c-h] tempdir Letters/Programs
+g)
+cp | grep notes tempdir Letters/Programs/Misc
+cp | grep misc tempdir Letters/Programs/Misc
+h)
+cp *copy.me Desktop /OS
+mv *move.me Desktop /OS
+i)
+rm *del*
+ 
+
