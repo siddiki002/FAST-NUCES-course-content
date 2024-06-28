@@ -1,0 +1,226 @@
+====================================		QUESTION # 01		===================================================
+Include Irvine32.inc
+.data
+array1 dword 1,3,4,5,6,7,8,9,11,12
+array2 dword 10 dup(?)
+.code
+main proc
+
+mov ecx, lengthof array1
+mov esi,offset array1
+L1:
+	push [esi]
+	add esi,4
+loop L1
+mov esi,offset array2
+mov ecx,lengthof array2
+L2:
+	pop eax
+	mov [esi],eax
+	add esi,4
+Loop L2
+mov ecx,lengthof array1
+mov esi,0
+L3:
+	mov eax,array2[esi]
+	call writedec
+	call crlf
+	add esi,4
+loop L3
+
+exit
+main ENDP
+END main
+====================================		QUESTION # 02		===================================================
+Include Irvine32.inc
+.data
+array1 dword 2,4,6,8,10
+array2 dword 1,3,5,7,9
+sum1 dword ?
+sum2 dword ?
+.code
+main proc
+
+call addsum
+
+exit
+main ENDP
+
+addfirstarray proc
+
+xor eax,eax
+mov ecx, lengthof array1
+mov esi,offset array1
+L1:
+	add eax,[esi]
+	add esi,4
+loop L1
+mov sum1,eax
+ret
+addfirstarray endp
+
+addsecondarray proc
+
+xor eax,eax
+mov ecx, lengthof array2
+mov esi,offset array2
+L1:
+	add eax,[esi]
+	add esi,4
+loop L1
+mov sum2,eax
+
+ret
+addsecondarray endp
+
+addsum proc
+
+call addsecondarray
+call addfirstarray
+mov eax,0
+add eax,sum1
+add eax,sum2
+call writedec
+
+ret
+addsum endp
+END main
+====================================		QUESTION # 03		===================================================
+include irvine32.inc
+.data
+temp dword ?
+col dword ?
+prompt byte "Enter Number of columns: ",0,0ah,0dh
+.code
+main proc
+mov edx,offset prompt
+call writestring
+call readint
+mov col,eax
+call printpattern
+
+exit
+main endp
+
+printpattern proc
+xor eax,eax
+xor ecx,ecx
+mov ecx,col
+xor ebx,ebx
+xor edx,edx
+mov ebx,col
+dec ebx
+;mov edx,1
+L1:
+	mov temp,ecx
+	sub ecx,1
+	cmp ecx,0
+	je np
+	mov eax,20h
+	L2:
+		call writechar
+	loop L2
+	np:
+	mov ecx,temp
+	mov edx,col
+	sub edx,ebx
+	mov ecx,edx
+	mov eax,2Ah
+	L3:
+		call writechar
+	loop L3
+	dec ebx
+	;inc edx
+	mov ecx,temp
+	call crlf
+loop L1
+ret
+printpattern endp
+end main
+====================================		QUESTION # 04		===================================================
+include irvine32.inc
+.data
+temp dword ?
+col dword ?
+prompt byte "Enter Number of columns: ",0,0ah,0dh
+temp2 dword ?
+.code
+main proc
+mov edx,offset prompt
+call writestring
+call readint
+mov col,eax
+call printpattern
+
+exit
+main endp
+
+printpattern proc
+xor eax,eax
+xor ecx,ecx
+mov ecx,col
+xor ebx,ebx
+xor edx,edx
+mov ebx,col
+dec ebx
+;mov edx,1
+mov eax,065
+L1:
+	mov temp2,eax
+	mov temp,ecx
+	sub ecx,1
+	cmp ecx,0
+	je np
+	mov eax,20h
+	L2:
+		call writechar
+	loop L2
+	np:
+
+	mov ecx,temp
+	mov edx,col
+	sub edx,ebx
+	mov ecx,edx
+	mov eax,temp2
+	L3:
+		call writechar
+		inc eax
+	loop L3
+	;inc eax
+	dec ebx
+	;inc edx
+	mov ecx,temp
+	call crlf
+loop L1
+ret
+printpattern endp
+end main
+====================================		QUESTION # 05		===================================================
+include irvine32.inc
+include macros.inc
+.data
+n dword ?
+sum dword ?
+.code
+main proc
+mwrite "Enter number to do the sum till ",0ah,odh
+call readint
+mov n,eax
+call sumton
+mov eax,sum
+call writedec
+
+exit
+main endp
+
+sumton proc
+mov ecx,n
+mov eax,1
+L1:
+	add sum,eax
+	inc eax
+Loop L1
+
+ret
+sumton endp
+end main

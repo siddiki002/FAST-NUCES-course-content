@@ -1,0 +1,200 @@
+NOT doesn't change any flag
+
+AND,OR. XOR changes carry and overflow flags to 0.
+
+CMP doesn't modify destination
+
+===========================================		TASK 1		==================================================
+Include Irvine32.inc
+.data
+x byte ?
+var dword ?
+.code
+main proc
+mov eax,0
+mov ebx,0
+mov ecx,6
+mov edx,0
+
+mov var,5
+cmp var,ecx
+ja L1
+cmp ecx,edx
+jbe L1
+mov x,0
+jmp L2
+L1:
+mov x,1
+L2:
+movzx eax,x
+call writedec
+
+exit
+main ENDP
+END main
+=================================================		TASK 2		===========================================
+Include Irvine32.inc
+.data
+arr sword 0,0,0,0,1,20,35,-12,66,4,0
+found byte "The first number found gretaer than 0 is",0ah,0dh,0
+n_found byte "No number is found greater than 0",0
+.code
+main proc
+mov eax,0
+mov ebx,0
+mov ecx,0
+mov edx,0
+
+mov ecx,lengthof arr
+mov esi,0
+L1:
+	cmp arr[esi],0
+	ja j1
+	add esi,2
+loop L1
+jmp j2
+j1:
+	mov edx,offset found
+	call writestring
+	movzx eax,arr[esi]
+	call writedec
+	exit
+j2:
+	mov edx,offset n_found
+	call writestring
+	exit
+main ENDP
+END main
+=========================================================	TASK 3		===========================================
+; Logic "All the values are equal"
+Include Irvine32.inc
+.data
+var1 byte ?
+var2 byte ?
+var3 byte ?
+var4 byte ?
+prompt byte "Enter values:",0ah,0dh,0
+equal byte "The entered values are equal",0ah,0
+n_equal byte "The entered values are not equal",0ah,0
+.code
+main proc
+mov eax,0
+mov ebx,0
+mov ecx,0
+mov edx,0
+
+mov edx,offset prompt
+call writestring
+call readint
+mov var1,al
+call readint
+mov var2,al
+call readint
+mov var3,al
+call readint
+mov var4,al
+mov al,var1
+mov bl,var2
+cmp al,bl
+mov bl,var3
+jne j1
+cmp al,bl
+jne j1
+mov bl,var4
+cmp al,bl
+jne j1
+jmp j2
+j1:
+	mov edx,offset n_equal
+	call writestring
+	exit
+j2:
+	mov edx,offset equal
+	call writestring	
+exit
+main ENDP
+END main
+=========================================================	TASK 4		===========================================
+Include Irvine32.inc
+
+.data
+
+array word 10,4,7,14,299,156,3,19,29,300,20
+prompt byte "Enter the value you want to search",0ah,0dh,0
+found byte "The entered element is found in the array",0ah,0dh,0
+notfound byte "The entered element is not found in the array",0ah,0dh,0
+
+.code
+main proc
+mov esi,0
+mov ecx, lengthof array
+mov edx,offset prompt
+call writestring
+call readint
+L1:
+	movzx ebx,array[esi]
+	cmp ebx,eax
+	je equal
+	add esi,2
+loop L1
+jmp notequal
+equal:
+	mov edx,offset found
+	call writestring
+	exit
+notequal:
+	mov edx, offset notfound
+	call writestring
+	exit
+
+
+
+main endp
+end main
+=========================================================	TASK 5		===========================================
+Include Irvine32.inc
+
+.data
+list word 1,56,7,89,23,45,11
+swap_count word 0
+temp word ?
+prompt byte "Number of swaps done are: ",0ah,0dh,0
+values byte "The values after swapping are: ",0ah,0dh,0
+.code
+main proc
+mov ebx,0
+mov esi,0
+mov eax,0
+mov ecx,lengthof list
+dec ecx
+L1:
+	mov bx,list[esi]
+	cmp bx,list[esi+2]		;because word
+	ja swap
+	add esi,2
+	loop L1
+swap:
+	xchg bx,list[esi+2]
+	mov list[esi],bx
+	inc swap_count
+	add esi,2
+loop L1
+mov edx,offset prompt
+call writestring
+movzx eax,swap_count
+call writedec
+call crlf
+mov edx,offset values
+call writestring
+mov ecx,lengthof list
+mov esi,0
+L2:
+	movzx eax,list[esi]
+	call writedec
+	call crlf
+	add esi,2
+loop L2
+exit
+main endp
+end main
+====================================================================================================================

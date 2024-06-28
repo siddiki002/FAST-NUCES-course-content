@@ -1,0 +1,76 @@
+================================ 		INDEXING		==========================================
+Include Irvine32.inc
+
+.data
+array word 1,2,3,4,5,6
+.code
+main proc
+mov esi,0
+mov dx,[array+4]		;indirect-offset
+mov ax, array[esi]		;indexed operand
+add esi,2
+mov ax,[array+esi]		; indexed operand
+mov esi,offset array
+mov bx, [esi]		;indirect/ indexed
+
+mov cx,[esi+2]		; indexed
+mov cx,[esi*type array]		;scale factor
+exit
+main endp
+end main
+
+===============================			FILING			=========================================
+Include Irvine32.inc
+
+.data
+filename byte 20 dup(?)
+buffer byte 501 dup(?)
+filehandle handle ?
+
+.code
+main proc
+
+mov edx, offset filename
+mov ecx, sizeof filename
+call readstring
+mov edx,offset filename
+call openinputfile
+mov filehandle,eax
+mov edx,offset buffer
+mov ecx,sizeof buffer
+call readfromfile
+mov buffer[eax],0
+mov edx,offset buffer
+call writestring
+mov eax,filehandle
+call closefile
+
+
+exit
+main endp
+end main
+================================			CONDITIONAL JMP			==========================
+Include Irvine32.inc
+
+.data
+Tr byte "True",0ah,0dh,0
+Fa byte "False",0ah,0dh,0
+
+.code
+main proc
+
+mov eax,1
+cmp eax,0
+jb L1
+	mov edx,offset Fa
+	call writestring
+	exit
+L1:
+	mov edx, offset Tr
+	call writestring
+	exit
+
+
+exit
+main endp
+end main

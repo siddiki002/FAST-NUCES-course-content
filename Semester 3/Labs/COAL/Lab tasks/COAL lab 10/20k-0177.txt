@@ -1,0 +1,306 @@
+=====================================				TASK 1			====================================
+include irvine32.inc
+
+.data
+array dword 3,1,4,11,6,7
+temp dword ?
+
+.code
+main proc
+xor eax,eax
+xor ebx,ebx
+xor ecx,ecx
+xor edx,edx
+push offset array
+call bubblesort
+mov ecx,lengthof array
+mov esi,offset array
+l1:
+	mov eax,[esi]
+	call writedec
+	call crlf
+	add esi,4
+loop l1
+exit
+main endp
+bubblesort proc 
+push ebp
+mov ebp,esp
+
+mov ecx, lengthof array
+dec ecx
+;mov ebx,0
+outerloop:
+	mov esi,[ebp+8]
+	mov temp,ecx
+	mov ecx,lengthof array
+	dec ecx
+	innerloop:
+		mov edx,[esi]
+		mov eax,[esi+4]
+		cmp edx,eax
+		jb n_swap
+		xchg edx,eax
+		mov [esi],edx
+		mov [esi+4],eax
+		n_swap:
+		add esi,4
+		loop innerloop
+	;inc ebx
+	mov ecx,temp
+loop outerloop
+mov esp,ebp
+pop ebp
+ret 4
+bubblesort endp
+end main
+=====================================				TASK 2			====================================
+include irvine32.inc
+include macros.inc
+.data
+n dword ?
+var1 dword ?
+var2 dword ?
+var3 dword ?
+divisor dword 10
+.code
+main proc
+xor edx,edx
+call input
+
+exit
+main endp
+
+input proc
+mwrite "Enter the number to check armstrong (the number must be 3 digits) "
+call readint
+mov n,eax
+call armstrong
+ret
+input endp
+
+armstrong proc
+
+div divisor
+mov var1,edx
+mov edx,0
+div divisor
+mov var2,edx
+mov edx,0
+div divisor
+mov var3,edx
+cmp eax,0
+jne w_input
+	mov eax,var1
+	imul eax,var1
+	imul eax,var1
+	mov var1,eax
+	mov eax,var2
+	imul eax,var2
+	imul eax,var2
+	mov var2,eax
+	mov eax,var3
+	imul eax,var3
+	imul eax,var3
+	mov var3,eax
+mov eax,var1
+add eax,var2
+add eax,var3
+cmp eax,n
+jne n_armstrong
+call display
+jmp end_proce
+w_input:
+	mwrite "The number is not 3 digits"
+	jmp end_proce
+n_armstrong:
+	mwrite "The entered number is not an armstrong number"
+end_proce:
+ret
+armstrong endp
+
+display proc
+mwrite "The entered number is an armstrong number"
+ret
+display endp
+end main
+=====================================				TASK 3			====================================
+include irvine32.inc
+include macros.inc
+.data
+str1 byte "I am programmer",0
+str2 byte lengthof str1 dup(?)
+.code
+main proc
+xor eax,eax
+mov esi,0
+add esi,lengthof str1
+sub esi,2
+mov edi,0
+call reverse
+mov edx,offset str2
+call writestring
+exit
+main endp
+
+reverse proc
+cmp esi,-1
+je end_proce
+	mov al,str1[esi]
+	mov str2[edi],al
+	dec esi
+	inc edi
+	call reverse
+end_proce:
+ret
+reverse endp
+
+end main
+=====================================				TASK 4			====================================
+include irvine32.inc
+include macros.inc
+.data
+
+.code
+main proc
+
+xor eax,eax
+call square
+
+exit
+main endp
+
+square proc
+
+enter 4,0
+
+mwrite "Enter any number: "
+call readint
+mov [esp-4],eax
+mov ebx,[esp-4]
+imul ebx,ebx
+mov [esp-4],ebx
+mov eax,[esp-4]
+call writedec
+
+leave
+ret
+
+square endp
+
+end main
+=====================================				TASK 5			====================================
+include irvine32.inc
+include macros.inc
+.data
+n dword ?
+
+.code
+main proc
+xor ebx,ebx
+mwrite "Enter the number to find factorial "
+call readint
+cmp eax,1
+je cc
+cmp eax,0
+je cc
+mov n,eax
+dec eax
+mov ebx,n
+call factorial
+mov eax,ebx
+call writedec
+exit
+cc:
+	mwrite "The factorial is 1"
+exit
+main endp
+
+factorial proc
+	cmp eax,0
+	je end_prog
+	imul ebx,eax
+	dec eax
+	call factorial
+end_prog:
+ret
+factorial endp
+end main
+=====================================				TASK 6			====================================
+include irvine32.inc
+include macros.inc
+.data
+array dword 3,5,31,33
+max dword ?
+flag byte ?
+.code
+main proc
+
+xor eax,eax
+mov esi,0
+mov ecx,lengthof array
+loopl:
+	mov flag,0
+	push array[esi]
+	call is_prime
+	cmp flag,0
+	je somenp
+	pop eax
+	xor eax,eax
+	add esi,4
+loop loopl
+call max_prime
+jmp end_proce
+somenp:
+	mwrite "One of the numbers entered is not prime: "
+	mov eax,array[esi]
+	call writedec
+end_proce:
+exit
+
+main endp
+
+is_prime proc
+
+xor edx,edx
+mov ebx,2
+L1:
+	mov eax,[esp+4]
+	cmp eax,ebx
+	je prime
+	div ebx
+	cmp edx,0
+	je n_prime
+	mov edx,0
+	inc ebx
+	jmp l1
+prime:
+mov flag,1
+ret
+n_prime:
+mov flag,0
+ret
+is_prime endp
+
+max_prime proc
+
+mov ecx,lengthof array
+mov esi,0
+mov eax,array[esi]
+mov max,eax
+func_loop:
+	mov eax,array[esi]
+	cmp eax,max
+	jle cont
+	mov max,eax
+	cont:
+	add esi,4
+loop func_loop
+mov eax,max
+mwrite "The max prime number is: "
+call writedec
+ret
+
+max_prime endp
+
+end main

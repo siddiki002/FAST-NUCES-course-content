@@ -1,0 +1,187 @@
+==============================================		QUESTION 1		===========================================
+INCLUDE Irvine32.inc
+.data
+
+str1 byte "127&j~3#^&*#*#45^",0
+element byte '#'
+
+.code
+
+mov esi,offset str1
+mov edi,esi
+mov al,element
+mov ecx,lengthof str1
+cld
+repne scasb
+jnz n_found
+dec edi
+sub edi,offset str1
+mov eax,edi
+n_found:
+exit
+main PROC
+==============================================		QUESTION 2		===========================================
+INCLUDE Irvine32.inc
+.data
+
+str1 byte "127&j~3#^&*#*#45^",0
+element byte '#'
+
+.code
+main PROC
+
+call scan_char
+jz endd
+call writedec
+endd:
+exit
+main ENDP
+
+Scan_char proc uses esi edi ecx 
+
+mov esi,offset str1
+mov edi,esi
+mov al,element
+mov ecx,lengthof str1
+cld
+repne scasb
+jnz n_found
+dec edi
+sub edi,offset str1
+mov eax,edi
+n_found:
+ret
+scan_char endp
+
+END main
+==============================================		QUESTION 3		===========================================
+INCLUDE Irvine32.inc
+include macros.inc
+.data
+str1 byte 20 dup(?)
+str2 byte 20 dup (?)
+buffer dword 20
+.code
+main PROC
+mwrite "Enter first string "
+mov edx,offset str1
+mov ecx,buffer
+call readstring
+;mov ecx,0
+;mov edx,0
+;mov eax,0
+mwrite "Enter second string "
+mov edx,offset str2
+mov ecx,buffer
+call readstring
+call iscompare
+exit
+main endp
+
+iscompare proc
+mov esi,offset str1
+mov edi,offset str2
+cld
+cmpsb
+jne n_equal
+mwrite "The strings entered are equal "
+jmp endd
+n_equal:
+mwrite "The strings entered are not equal "
+endd:
+ret
+iscompare endp
+
+END main
+==============================================		QUESTION 4		===========================================
+INCLUDE Irvine32.inc
+include macros.inc
+.data
+str1 byte 20 dup(?)
+str2 byte 20 dup (?)
+buffer dword 20
+.code
+main PROC
+mwrite "Enter string "
+mov edx,offset str1
+mov ecx,buffer
+call readstring
+call move
+mwrite "The string has been copied"
+mov edx,offset str2
+call crlf
+call writestring
+exit
+main endp
+
+move proc
+
+mov esi,offset str1
+mov edi,offset str2
+rep movsb
+ret
+move endp
+
+END main
+==============================================		QUESTION 5		===========================================
+INCLUDE Irvine32.inc
+include macros.inc
+.data
+str1 byte "I am a programmer",0
+str2 byte lengthof str1 dup(?)
+;buffer dword 10
+.code
+main PROC
+call str_rev
+mwrite "The string has been reversed"
+mov edx,offset str2
+call crlf
+call writestring
+exit
+main endp
+
+str_rev proc
+
+mov esi,offset str1
+add esi,(lengthof str1)-2
+mov edi,offset str2
+mov ecx,lengthof str1
+std
+l1:
+	movsb
+	add edi,2
+loop l1
+
+ret
+str_rev endp
+
+END main
+==============================================		QUESTION 6		===========================================
+INCLUDE Irvine32.inc
+include macros.inc
+.data
+array word 3,1,5,9,11,33
+multiplier word 3
+.code
+main PROC
+xor edx,edx
+xor eax,eax
+mov esi,offset array
+mov edi,offset array
+mov ecx,lengthof array
+l1: lodsw
+mul multiplier
+stosw
+loop l1
+mov ecx,lengthof array
+mov esi,0
+l2:
+	mov ax,array[esi]
+	call writedec
+	mwrite " "
+	add esi,2
+loop l2
+exit
+main endp
+
+END main

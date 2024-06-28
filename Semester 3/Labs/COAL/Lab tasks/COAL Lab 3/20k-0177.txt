@@ -1,0 +1,173 @@
+===========================================================	TASK 1	====================================================
+TITLE Task1
+
+Include irvine32.inc
+.data
+
+val1 SWORD ?
+val2 SBYTE -10
+.code
+
+main PROC
+
+mov al,val2
+
+call Dumpregs
+exit
+main endp
+end main
+
+===========================================================	TASK 2	====================================================
+
+TITLE Task2
+
+Include irvine32.inc
+.data
+
+val3 DWORD -1d
+
+.code
+
+main PROC
+
+mov eax,val3
+
+call Dumpregs
+exit
+main endp
+end main
+
+===========================================================	TASK 3	====================================================
+
+TITLE Task3
+
+Include irvine32.inc
+.data
+
+Warray WORD 3h,4h,5h
+
+.code
+
+main PROC
+
+call Dumpregs
+exit
+main endp
+end main
+
+===========================================================	TASK 4	====================================================
+
+TITLE Task4
+
+Include irvine32.inc
+.data
+
+black BYTE '0'	; declaring favorite color
+varA WORD 12
+varB WORD 2
+varC WORD 13
+varD WORD 8
+varE WORD 14
+
+.code
+
+main PROC
+
+call Dumpregs
+exit
+main endp
+end main
+
+===========================================================	TASK 5	====================================================
+
+TITLE Task5
+
+Include irvine32.inc
+.data
+
+a DWORD 10h
+b DWORD 15h
+cc DWORD 20h
+d DWORD 30h
+
+.code
+
+main PROC
+xor ebx,ebx
+xor eax,eax
+xor ecx,ecx
+xor edx,edx
+
+mov eax,a
+add eax,b
+mov ecx,a
+sub ecx,b
+sub eax,ecx
+add eax,cc
+add eax,d
+mov ebx,eax
+
+call Dumpregs
+exit
+main endp
+end main
+
+===========================================================	TASK 6	====================================================
+
+TITLE Task6
+
+Include irvine32.inc
+.data
+
+a BYTE 00010000b
+b BYTE 00010101b
+cc BYTE 100000b
+d BYTE 1100000b
+
+.code
+
+main PROC
+xor ebx,ebx
+xor eax,eax
+xor ecx,ecx
+xor edx,edx
+
+mov al,a
+add al,b
+mov cl,a
+sub cl,b
+sub al,cl
+add al,cc
+add al,d
+mov bl,al
+
+call Dumpregs
+exit
+main endp
+end main
+
+===========================================================	TASK 7	====================================================
+
+TITLE Task7
+
+Include irvine32.inc
+.data
+
+data1 WORD 8
+data2 WORD 15
+data3 WORD 20
+
+.code
+
+main PROC
+xor ebx,ebx
+xor eax,eax
+xor ecx,ecx
+xor edx,edx
+
+mov ax,(20+data1-data3+20+data2)
+
+call Dumpregs
+exit
+main endp
+end main

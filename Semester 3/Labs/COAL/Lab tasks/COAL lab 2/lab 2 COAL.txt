@@ -1,0 +1,235 @@
+********************************************		Program 1		***********************************************************
+TITLE Task 1
+
+INCLUDE Irvine32.inc
+
+.code
+
+main PROC
+
+xor eax,eax ;initializing all the registers to zero
+xor ebx,ebx
+mov ecx,0
+mov edx,0
+COMMENT !
+Starting calculation
+!
+mov eax,47
+add eax,39
+add eax,60
+add eax,85
+add eax,64
+add eax,54o
+sub eax,0Ah
+
+call DumpRegs
+exit
+main ENDP
+END main
+
+****************************************************************************************************************************
+
+********************************************		Program 2		***********************************************************
+
+TITLE Task 2
+
+INCLUDE Irvine32.inc
+
+.code
+
+main PROC
+
+xor eax,eax ;initializing all the registers to zero
+xor ebx,ebx
+mov ecx,0
+mov edx,0
+COMMENT !
+Starting calculation
+!
+mov eax,30
+mov ebx,186
+sub eax,9
+sub ebx,150
+add eax,ebx
+
+call DumpRegs
+exit
+main ENDP
+END main
+***********************************************************************************************************************
+
+********************************************		Program 3		***********************************************************
+
+TITLE Task 3
+
+INCLUDE Irvine32.inc
+
+.code
+
+main PROC
+
+xor eax,eax ;initializing all the registers to zero
+xor ebx,ebx
+mov ecx,0
+mov edx,0
+COMMENT !
+Starting calculation
+!
+mov eax,101110b
+add eax, 50Ah
+mov ebx, 6710d
+add ebx, 1010001b
+add ebx, 0Fh
+add eax,ebx
+
+call DumpRegs
+exit
+main ENDP
+END main
+
+***********************************************************************************************************************
+********************************************		Program 4		***********************************************************
+TITLE Task 4	
+
+INCLUDE Irvine32.inc
+
+.code
+
+main PROC
+
+xor eax,eax ;initializing all the registers to zero
+xor ebx,ebx
+mov ecx,0
+mov edx,0
+COMMENT !
+Starting calculation
+!
+mov eax,10001101b
+sub eax,0D83h
+mov ebx,385
+add ebx,10
+add ebx,1111101b
+sub ebx,0Eh
+add ebx,0Fh
+add eax,ebx
+
+call DumpRegs
+exit
+main ENDP
+END main
+***********************************************************************************************************************
+********************************************		Program 5 parti		***********************************************************
+
+TITLE Task 5 part i
+
+INCLUDE Irvine32.inc
+
+.code
+
+main PROC
+
+COMMENT !
+Starting calculation
+!
+
+add eax, 1
+add eax,ebx
+add eax, edx
+sub eax,ecx
+add eax, 0Ah
+sub eax,65o
+add eax, 73d
+mov edx,eax
+
+call DumpRegs
+exit
+main ENDP
+END main
+
+***********************************************************************************************************************
+
+********************************************		Program 5 part ii		***********************************************************
+
+
+TITLE Task 5 part ii
+
+INCLUDE Irvine32.inc
+
+.code
+
+main PROC
+; initializing the registers
+mov eax,7
+mov ebx,83h 
+mov ecx,247o
+mov edx,0FFh
+COMMENT !
+Starting calculation
+!
+
+add eax, 1
+add eax,ebx
+add eax, edx
+sub eax,ecx
+add eax, 0Ah
+sub eax,65o
+add eax, 73d
+mov edx,eax
+s
+call DumpRegs
+exit
+main ENDP
+END main
+
+***********************************************************************************************************************
+********************************************		Program 6 part i	***********************************************************
+
+TITLE Task 6 part i
+
+INCLUDE Irvine32.inc
+
+.code
+
+main PROC
+COMMENT !
+Starting calculation
+!
+mov eax,5ADh
+sub eax,eax
+add eax,65o
+add eax,65d
+sub eax,11110111b
+add eax,150
+
+call DumpRegs
+exit
+main ENDP
+END main
+
+***********************************************************************************************************************
+********************************************		Program 6 part ii	***********************************************************
+
+TITLE Task 6 part ii
+
+INCLUDE Irvine32.inc
+
+.code
+; initializing the register
+mov eax,5d
+main PROC
+COMMENT !
+Starting calculation
+!
+mov eax,5ADh
+sub eax,eax
+add eax,65o
+add eax,65d
+sub eax,11110111b
+add eax,150
+
+call DumpRegs
+exit
+main ENDP
+END main
+
+***********************************************************************************************************************

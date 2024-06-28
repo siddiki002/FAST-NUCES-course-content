@@ -1,0 +1,215 @@
+=======================================			TASK 1			===================================
+INCLUDE  irvine32.inc
+
+.data
+source byte "My name is Ammar",0
+destination byte lengthof source dup(?)
+.code
+
+main PROC
+
+mov esi,0
+;mov edi,OFFSET destination
+mov ecx,lengthof source
+L1:
+mov al,source[esi]
+mov destination[esi],al
+inc esi
+loop L1
+mov edx,offset destination
+call writestring
+
+exit
+=======================================			TASK 2			===================================
+INCLUDE  irvine32.inc
+
+.data
+source byte 10,20,30,40,50
+.code
+
+main PROC
+
+mov esi,0
+mov edi,(lengthof source) - 1
+mov ecx,(lengthof source)/2
+
+L1:
+	mov al,source[esi]
+	xchg al,source[edi]
+	mov source[esi],al
+	inc esi
+	dec edi
+loop L1
+mov esi,0
+mov ecx,lengthof source
+xor eax,eax
+L2:
+	mov al,source[esi]
+	call writedec
+	call crlf
+	inc esi
+loop L2
+
+
+
+exit
+main ENDP
+END main
+=======================================			TASK 3			===================================
+include irvine32.inc
+
+.data
+sum dword ?
+.code
+main proc
+xor eax,eax
+xor ecx,ecx
+xor ebx,ebx
+xor edx,edx
+mov ecx,8
+mov eax,0
+mov ebx,1
+call writedec
+call crlf
+xchg eax,ebx
+call writedec
+call crlf
+xchg eax,ebx
+L1:
+	mov sum,eax
+	add eax,ebx
+	call writedec
+	xchg eax,sum
+	mov eax,ebx
+	mov ebx,sum
+	call crlf
+	
+loop L1
+exit
+main endp
+end main
+=======================================			TASK 4			===================================
+include irvine32.inc
+.data
+temp dword ?
+.code
+main proc
+xor eax,eax
+xor ecx,ecx
+mov ecx,5
+xor ebx,ebx
+xor edx,edx
+mov ebx,4
+;mov edx,1
+L1:
+	mov temp,ecx
+	sub ecx,1
+	cmp ecx,0
+	je np
+	mov eax,20h
+	L2:
+		call writechar
+	loop L2
+	np:
+	mov ecx,temp
+	mov edx,5
+	sub edx,ebx
+	mov ecx,edx
+	mov eax,2Ah
+	L3:
+		call writechar
+	loop L3
+	dec ebx
+	;inc edx
+	mov ecx,temp
+	call crlf
+loop L1
+exit
+main endp
+end main
+=======================================			TASK 5			===================================
+include irvine32.inc
+
+.data
+prompt byte "Enter number of terms to print: "
+;input dword ?
+sum dword ?
+.code
+main proc
+xor eax,eax
+xor ecx,ecx
+xor ebx,ebx
+xor edx,edx
+mov edx,offset prompt
+call writestring
+call readint
+sub eax,2
+mov ecx,eax
+mov eax,0
+mov ebx,1
+call writedec
+call crlf
+xchg eax,ebx
+call writedec
+call crlf
+xchg eax,ebx
+L1:
+	mov sum,eax
+	add eax,ebx
+	call writedec
+	xchg eax,sum
+	mov eax,ebx
+	mov ebx,sum
+	
+	call crlf
+	
+loop L1
+exit
+main endp
+end main
+=======================================			TASK 6			===================================
+include irvine32.inc
+.data
+n dword ?
+prompt byte "Enter number of lines to print: "
+temp dword ?
+.code
+main proc
+xor eax,eax
+xor ecx,ecx
+mov edx, offset prompt
+call writestring
+call readint
+mov n,eax
+mov ecx,n
+xor ebx,ebx
+xor edx,edx
+sub eax,1
+mov ebx,eax
+;mov edx,1
+L1:
+	mov temp,ecx
+	sub ecx,1
+	cmp ecx,0
+	je np
+	mov eax,20h
+	L2:
+		call writechar
+	loop L2
+	np:
+	mov ecx,temp
+	mov edx,n
+	sub edx,ebx
+	mov ecx,edx
+	mov eax,2Ah
+	L3:
+		call writechar
+	loop L3
+	dec ebx
+	;inc edx
+	mov ecx,temp
+	call crlf
+loop L1
+exit
+main endp
+end main

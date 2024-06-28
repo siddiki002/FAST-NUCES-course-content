@@ -1,0 +1,149 @@
+==============================================		TASK 1		===========================================
+include irvine32.inc
+
+.data
+prompt byte "Generating 20 numbers between 0 and 990"
+
+
+.code
+main proc
+xor eax,eax
+xor ebx,ebx
+xor ecx,ecx
+xor edx,edx
+mov ecx,20
+call randomize
+mov dl,0
+mov dh,0
+mov al,0+(2*16)
+call settextcolor
+
+L1:
+	mov eax,990
+	;call randomize
+	call randomrange
+	call gotoxy
+	call writeint
+	mov eax,5
+	call delay
+	call crlf
+	inc dh
+	add dl,2
+loop L1
+
+exit
+main endp
+end main
+==============================================		TASK 2		===========================================
+include irvine32.inc
+
+.data
+max_row word ?
+max_col word ?
+
+
+.code
+main proc
+xor eax,eax
+xor ebx,ebx
+xor ecx,ecx
+xor edx,edx
+mov ecx,100
+call randomize
+call getmaxxy 
+mov max_row,ax
+mov max_col,dx
+
+
+L1:
+	movzx eax,max_row
+	;call randomize
+	call randomrange
+	mov dh,al
+	movzx eax,max_col
+	call randomrange
+	mov dl,al
+	call gotoxy
+	mov eax,42
+	call writechar
+	mov eax,100
+	call delay
+loop L1
+
+exit
+main endp
+end main
+==============================================		TASK 3		===========================================
+include irvine32.inc
+
+.data
+prompt1 byte "10 numbers from 0 to 4,294,967,294",0
+prompt2 byte "10 numbers from -50 to 49"
+.code
+main proc
+xor eax,eax
+xor ebx,ebx
+xor ecx,ecx
+xor edx,edx
+mov ecx,10
+call randomize
+mov edx,offset prompt1
+call writestring
+call crlf
+L1:
+	mov eax,4294967294
+	call randomrange
+	call writedec
+	call crlf
+loop L1
+mov ecx,10
+mov edx,offset prompt2
+call writestring
+call crlf
+L2:
+	mov eax,100
+	call randomrange
+	sub eax,50
+	call writeint
+	call crlf
+loop L2
+exit
+main endp
+end main
+==============================================		TASK 4		===========================================
+INCLUDE Irvine32.inc
+BUFFER_SIZE = 501
+.data
+buffer BYTE BUFFER_SIZE DUP(?)
+filename BYTE "Myfile.txt",0
+fileHandle HANDLE ?
+
+str3 BYTE "Enter up to 500 characters and press"
+BYTE "[Enter]: ",0dh,0ah,0
+
+.code
+
+main PROC
+
+; Create a new text file.
+mov edx,OFFSET filename
+call CreateOutputFile
+mov fileHandle,eax
+; Ask the user to input a string.
+mov edx,OFFSET str3 ; "Enter upto ...."
+call WriteString
+mov ecx,BUFFER_SIZE ; Input a string
+mov edx,OFFSET buffer
+call ReadString
+
+; Write the buffer to the output file.
+mov eax,fileHandle
+mov edx,OFFSET buffer
+
+call WriteToFile
+
+call CloseFile
+
+exit
+main ENDP
+END main

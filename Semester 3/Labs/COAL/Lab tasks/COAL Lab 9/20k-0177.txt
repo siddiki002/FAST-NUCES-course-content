@@ -1,0 +1,171 @@
+=================================================				TASK 1								=====================
+INCLUDE Irvine32.inc
+.code
+
+main PROC
+
+mov eax,3							; moving value 3 in eax
+mov ebx,eax
+mov ecx,eax
+shl eax,4
+shl ebx,2
+add eax,ebx
+add eax,ecx
+call writedec
+exit
+
+main ENDP
+END main
+=================================================				TASK 2								=====================
+INCLUDE Irvine32.inc
+.code
+
+main PROC
+mov eax,0
+mov ax,-128
+rol eax,16
+sar eax,16
+call writedec
+exit
+
+main ENDP
+END main
+=================================================				TASK 3								=====================
+Include Irvine32.inc
+
+.data
+timestamp word 0100100100101011b ;001001 to be saved
+bMinutes byte ?
+.code
+main proc
+mov eax,0
+mov ax,timestamp
+shl ax,5
+shr ax,10
+mov bMinutes,al
+call writebin
+
+
+exit
+main endp
+end main
+=================================================				TASK 4(a)								=====================
+include irvine32.inc
+
+.data
+
+.code
+main proc
+xor eax,eax
+xor ebx,ebx
+xor ecx,ecx
+xor edx,edx
+
+
+mov ax, 3831h
+mov bx, 2130h
+shr ax,1
+rcr ax,1
+call dumpregs
+exit
+main endp
+end main
+=================================================				TASK 4(b)								=====================
+include irvine32.inc
+
+.data
+
+.code
+main proc
+xor eax,eax
+xor ebx,ebx
+xor ecx,ecx
+xor edx,edx
+
+
+mov ax, 3831h
+mov bx, 2130h
+shrd ax,bx,1
+call dumpregs
+exit
+main endp
+end main
+=================================================				TASK 5								=====================
+include irvine32.inc
+
+.data
+temp dword ?
+val1 dword ?
+val2 dword ?
+val3 dword ?
+.code
+main proc
+mov eax,0
+mov ebx,0
+mov ecx,0
+mov edx,0
+call readint
+mov val1,eax
+call readint
+mov val2,eax
+call readint
+mov val3,eax
+mov eax,val2
+div val3
+mov temp,eax
+mov eax,val1
+div val2
+imul eax,temp
+mov val1,eax
+call writeint
+
+exit
+main endp
+end main
+=================================================				TASK 6								=====================
+include irvine32.inc
+include macros.inc
+.data
+op1 qword 0A2B2A40674981234h
+op2 qword 08010870000234502h
+sum dword 3 dup(?)
+
+.code
+main proc
+mov esi, offset op1
+mov edi, offset op2
+mov ebx, offset sum
+mov ecx,2
+call extended_add
+mov ebx,offset sum
+mov eax, [ebx+8]
+call writehex
+mwrite " "
+mov eax,[ebx+4]
+call writehex
+mwrite " "
+mov eax,[ebx]
+call writehex
+mwrite " "
+exit
+main endp
+
+extended_add proc
+pushad
+clc
+l1:
+	mov eax,[esi]
+	adc eax,[edi]
+	mov [ebx],eax
+	pushfd
+	add esi,4
+	add edi,4
+	add ebx,4
+	popfd
+loop l1
+popad
+adc word ptr [ebx],0
+ret
+
+extended_add endp
+end main
